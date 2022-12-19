@@ -57,7 +57,9 @@ function loadSystem() {
 
   git fetch &> log/initPartarum/fetchPartarum.txt
 
-  git pull -f origin main
+  git pull -f origin main &> log/initPartarum/pullPartarum.txt
+
+  ls &> log/initPartarum/folderAfterPullPartarum.txt
 
   git checkout main
 
