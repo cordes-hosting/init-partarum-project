@@ -14,15 +14,9 @@ function loadSystem() {
     echo "git is installed"
   fi
 
-  if [[ ! -d log ]];
-  then
-    mkdir log
-    mkdir log/partarum
-  else
-    mkdir log/partarum
-  fi
+  mkdir -p log/initPartarum
 
-  git status &> log/partarum/statusStart.txt
+  git status &> log/initPartarum/statusStart.txt
 
   # test ob Ordner schon initialisiert ist
 
@@ -49,7 +43,7 @@ function loadSystem() {
 
   [[ $(git config --get push.autoSetupRemote) != true ]] && git config --global --add --bool push.autoSetupRemote true
 
-  git fetch
+  git fetch &> log/initPartarum/fetchRemote.txt
 
   git checkout -b main
 
@@ -61,13 +55,13 @@ function loadSystem() {
 
   git remote add origin https://github.com/partarum/partarum.git
 
-  git fetch
+  git fetch &> log/initPartarum/fetchPartarum.txt
 
   git pull -f origin main
 
   git checkout main
 
-  git merge partarum
+  git merge partarum &> log/initPartarum/mergePartarum.txt
 
   git remote rm origin
 
@@ -76,8 +70,6 @@ function loadSystem() {
   git commit -a -m "add Partarum"
 
   git push
-
-  mkdir -p log/initPartarum
 
   git status &> log/initPartarum/status.txt
 }
