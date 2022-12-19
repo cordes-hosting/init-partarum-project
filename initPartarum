@@ -14,7 +14,31 @@ function loadSystem() {
     echo "git is installed"
   fi
 
-  git init
+  if [[ ! -d log ]];
+  then
+    mkdir log
+    mkdir log/partarum
+  else
+    mkdir log/partarum
+  fi
+
+  git status &> log/partarum/statusStart.txt
+
+  # test ob Ordner schon initialisiert ist
+
+  # test ob in einem Git - Projekt
+  # inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+
+  # test ob in einem Git - Initialisierten Ordner
+  # is_git_init="$(git rev-parse --git-dir 2>/dev/null)"
+  # wenn in einem Git - Initialisierten Folder drinn, dann ist das Ergebniss ".git"
+  # [[ $is_git_init == ".git" ]] && echo "Initialisierter Folder"
+  # wenn in einem Folder von einem Git - Initialisierten Folder drinn, dann ist das Ergebniss "/path/.git"
+  # wenn keine Initialisierung vorliegt, dann kommt ein leerer String
+  # [[ $is_git_init == "" ]] && echo "Nicht initialisiert"
+
+
+  [[ $is_git_init != ".git" ]] && git init
 
   git config config.user "Partarum"
   git config config.email "email@partarum.de"
@@ -23,7 +47,7 @@ function loadSystem() {
 
   git remote add origin "$1"
 
-  git config --global --add --bool push.autoSetupRemote true
+  [[ $(git config --get push.autoSetupRemote) != true ]] && git config --global --add --bool push.autoSetupRemote true
 
   git fetch
 
@@ -53,7 +77,9 @@ function loadSystem() {
 
   git push
 
-  git status > status.txt
+  mkdir -p log/initPartarum
+
+  git status &> log/initPartarum/status.txt
 }
 
 function main() {
