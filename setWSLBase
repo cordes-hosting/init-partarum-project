@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Brief description of your script
+# Copyright 2022 bombi
+
+function main() {
+
+  echo "nameserver 8.8.4.4" | sudo tee -a /etc/resolv.conf
+
+  sudo ntpdate pool.ntp.org
+
+
+}
+
+main "$@"
